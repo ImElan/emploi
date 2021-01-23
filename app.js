@@ -1,12 +1,16 @@
 const express = require('express');
 
+const teamRouter = require('./routes/teamRoutes');
+
 const ErrorHandler = require('./utils/errorHandler');
+const handleError = require('./controllers/errorController');
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Home route');
-});
+// Body-parser, To read data from req.body
+app.use(express.json({ limit: '10kb' }));
+
+app.use('/api/v1/teams', teamRouter);
 
 app.get('*', (req, res, next) => {
     const error = new ErrorHandler(`URL ${req.originalUrl} doesn't exists`, 404);
@@ -14,6 +18,6 @@ app.get('*', (req, res, next) => {
 });
 
 // Global Error Handler Middleware.
-app.use();
+app.use(handleError);
 
 module.exports = app;
