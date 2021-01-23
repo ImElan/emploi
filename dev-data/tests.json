@@ -1,0 +1,317 @@
+[
+    {
+        "companyName": "Accolite",
+        "salaryDetails": "CTC: 9 to 11L",
+        "role": ["Software Engineer"],
+        "eligibleBranches": ["ECE", "CS", "EI", "EE", "IT"],
+        "criteria": {
+            "basePercentageIn10th": null,
+            "basePercentageIn12th": null,
+            "baseGPA": 6.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-04-21,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-25,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    },
+    {
+        "companyName": "Arcesium",
+        "salaryDetails": "Rs. 1,00,000 p.m",
+        "role": null,
+        "eligibleBranches": ["ECE", "CS", "EI", "EE", "IT"],
+        "criteria": {
+            "basePercentageIn10th": null,
+            "basePercentageIn12th": null,
+            "baseGPA": 7.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-04-12,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-25,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    },
+    {
+        "companyName": "SAP Labs",
+        "salaryDetails": "Total Target Cash: Rs.8.50, Joining Bonus: Rs.4.50 & Benefits: Rs.7.50; CTC: Rs.20.50",
+        "role": ["Associate Developer"],
+        "eligibleBranches": ["ECE", "CS", "EI", "EE", "IT"],
+        "criteria": {
+            "basePercentageIn10th": 60,
+            "basePercentageIn12th": 60,
+            "baseGPA": 7.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-04-02,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-25,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    },
+    {
+        "companyName": "BNY Mellon Technology",
+        "salaryDetails": "CTC: Rs. 17.34",
+        "role": null,
+        "eligibleBranches": ["All Branches"],
+        "criteria": {
+            "basePercentageIn10th": null,
+            "basePercentageIn12th": null,
+            "baseGPA": 6.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-04-21,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-27,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    },
+    {
+        "companyName": "Texas Instruments",
+        "salaryDetails": "Rs. 21,50,880",
+        "role": null,
+        "eligibleBranches": ["ECE", "CS", "EI", "EE", "IT"],
+        "criteria": {
+            "basePercentageIn10th": null,
+            "basePercentageIn12th": null,
+            "baseGPA": 7.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-04-27,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-25,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    },
+    {
+        "companyName": "Urjanet Energy Solutions",
+        "salaryDetails": "Rs. 18.00L",
+        "role": null,
+        "eligibleBranches": ["ECE", "CS", "IT"],
+        "criteria": {
+            "basePercentageIn10th": null,
+            "basePercentageIn12th": null,
+            "baseGPA": 8.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-05-01,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-25,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    },
+    {
+        "companyName": "Chronus Software India",
+        "salaryDetails": "Rs. 15 Lakhs + 2 Lakhs of stocks and benefits",
+        "role": ["Software Development Engineer"],
+        "eligibleBranches": ["ECE", "CS", "IT"],
+        "criteria": {
+            "basePercentageIn10th": null,
+            "basePercentageIn12th": null,
+            "baseGPA": 8.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-04-22,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-25,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    },
+    {
+        "companyName": "Amazon Development Center",
+        "salaryDetails": "Rs. 13.50 + RSU",
+        "role": ["Software Development Engineer"],
+        "eligibleBranches": ["ECE", "CS", "EE", "IT"],
+        "criteria": {
+            "basePercentageIn10th": null,
+            "basePercentageIn12th": null,
+            "baseGPA": 6.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-04-11,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-25,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    },
+    {
+        "companyName": "Khoros",
+        "salaryDetails": "CTC: Rs. 10.71",
+        "role": null,
+        "eligibleBranches": ["ECE", "CS", "IT"],
+        "criteria": {
+            "basePercentageIn10th": 70,
+            "basePercentageIn12th": 70,
+            "baseGPA": 7.0,
+            "arrearCriteria": "No Current Arrear"
+        },
+        "lastDateTimeForRegistration": "2021-04-23,10:00",
+        "selectionProcess": [
+            {
+                "round": "Pre Placement Talk",
+                "dateTime": "2021-04-25,10:00"
+            },
+            {
+                "round": "Written Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Online Test",
+                "dateTime": "2021-04-26,10:00"
+            },
+            {
+                "round": "Technical and HR Interview",
+                "dateTime": "2021-04-27,10:00"
+            }
+        ],
+        "bond": null,
+        "delinkingAmount": null,
+        "confirmationStatus": "confirmed",
+        "team": "team_id_goes_here"
+    }
+]
