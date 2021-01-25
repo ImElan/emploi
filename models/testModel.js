@@ -4,7 +4,7 @@ const testSchema = mongoose.Schema(
     {
         companyName: {
             type: String,
-            uniquie: true,
+            unique: true,
             required: [true, 'A Test should have a company name.'],
         },
         eligibleBranches: {

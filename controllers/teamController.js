@@ -1,4 +1,5 @@
 const Team = require('../models/teamModel');
+const Test = require('../models/testModel');
 const catchAsync = require('../utils/catchAsync');
 const ErrorHandler = require('../utils/errorHandler');
 
@@ -64,6 +65,10 @@ exports.deleteTeam = catchAsync(async (req, res, next) => {
     if (!team) {
         return next('No Team was found with the given id', 404);
     }
+
+    // Also delete all the tests that belongs to that team.
+    await Test.deleteMany({ team: id });
+
     res.status(204).json({
         status: 'success',
         data: null,
