@@ -40,7 +40,6 @@ exports.addNewTest = catchAsync(async (req, res, next) => {
 });
 
 exports.updateTest = catchAsync(async (req, res, next) => {
-    console.log(req.body);
     const { id } = req.params;
     const updatedTest = await Test.findByIdAndUpdate(id, req.body, {
         new: true,

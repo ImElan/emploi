@@ -73,6 +73,11 @@ const testSchema = mongoose.Schema(
     }
 );
 
+testSchema.pre(/^find/, function (next) {
+    this.populate({ path: 'team', select: '-__v' });
+    next();
+});
+
 const Test = mongoose.model('Test', testSchema);
 
 module.exports = Test;
