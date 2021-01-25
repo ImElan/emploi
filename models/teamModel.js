@@ -24,10 +24,8 @@ const teamSchema = mongoose.Schema(
         yearOfStudy: {
             type: Number,
             required: [true, 'A Team must mention the year of study.'],
-            enum: {
-                values: [1, 2, 3, 4],
-                message: 'Year of Study must be between 1 and 4.',
-            },
+            min: 1,
+            max: 4,
         },
         createdAt: {
             type: Date,
