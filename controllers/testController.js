@@ -2,6 +2,7 @@ const Test = require('../models/testModel');
 const Team = require('../models/teamModel');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
+const ApiFeatures = require('../utils/apiFeatures');
 
 exports.setTestBody = (req, res, next) => {
     if (!req.body.team) {
@@ -30,7 +31,13 @@ exports.getAllTest = catchAsync(async (req, res, next) => {
         filter = { team: teamId };
     }
 
-    const tests = await Test.find(filter);
+    const features = new ApiFeatures(Test.find(filter), req.query)
+        .filter()
+        .limitFields()
+        .sort()
+        .paginate();
+
+    const tests = await features.query;
     res.status(200).json({
         status: 'success',
         data: {

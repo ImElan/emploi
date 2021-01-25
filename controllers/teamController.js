@@ -1,10 +1,16 @@
 const Team = require('../models/teamModel');
 const Test = require('../models/testModel');
+const ApiFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const ErrorHandler = require('../utils/errorHandler');
 
 exports.getAllTeams = catchAsync(async (req, res, next) => {
-    const teams = await Team.find();
+    const features = new ApiFeatures(Team.find(), req.query)
+        .filter()
+        .limitFields()
+        .sort()
+        .paginate();
+    const teams = await features.query;
     res.status(200).json({
         status: 'success',
         data: {
