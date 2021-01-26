@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const ErrorHandler = require('../utils/errorHandler');
+const Email = require('../utils/sendMail');
 
 const getJwtToken = (id) =>
     jwt.sign({ id: id }, process.env.JWT_SECRET_KEY, {
@@ -38,6 +39,8 @@ const sendJwtToken = (user, statusCode, req, res) => {
 
 exports.signUp = catchAsync(async (req, res, next) => {
     const user = await User.create(req.body);
+    const URL = `${req.protocol}://${req.get('host')}/profile`;
+    await new Email(user, URL).sendWelcome();
     sendJwtToken(user, 201, req, res);
 });
 
@@ -122,5 +125,21 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
         'host'
     )}/api/v1/user/resetPassword/${resetToken}`;
 
-    res.status(200).send('Hello...');
+    try {
+        await new Email(user, resetURL).sendResetPassword();
+        res.status(200).json({
+            status: 'success',
+            message: 'Token Id (URL) to reset your password was sent to your email address.',
+        });
+    } catch (error) {
+        user.passwordResetToken = undefined;
+        user.passwordResetExpiresIn = undefined;
+        await user.save({ validateBeforeSave: false });
+        return next(
+            new ErrorHandler(
+                "There's some problem with sending email. Please try again later.",
+                500
+            )
+        );
+    }
 });

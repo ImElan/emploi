@@ -4,7 +4,9 @@
     "description": "Placement Management Tool built using MERN Stack",
     "main": "app.js",
     "scripts": {
-        "start:dev": "nodemon server.js"
+        "start:dev": "nodemon server.js",
+        "start:prod-windows": "SET NODE_ENV=production nodemon server.js",
+        "start:prod-linux": "NODE_ENV=production nodemon server.js"
     },
     "author": "Elan",
     "license": "ISC",

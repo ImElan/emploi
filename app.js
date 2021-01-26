@@ -25,7 +25,7 @@ app.use('/api/v1/teams', teamRouter);
 app.use('/api/v1/tests', testRouter);
 app.use('/api/v1/users', userRouter);
 
-app.get('*', (req, res, next) => {
+app.all('*', (req, res, next) => {
     const error = new ErrorHandler(`URL ${req.originalUrl} doesn't exists`, 404);
     next(error);
 });

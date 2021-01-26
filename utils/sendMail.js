@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const pug = require('pug');
-const htmlToText = require('html-to-text');
+const { htmlToText } = require('html-to-text');
 
 class Email {
     constructor(user, url) {
@@ -56,7 +56,7 @@ class Email {
 
     async sendResetPassword() {
         await this.send(
-            'Reset Password',
+            'resetPassword',
             'Your Password Reset URL (Valid only for 10 minutes)'
         );
     }
