@@ -2,6 +2,7 @@ const express = require('express');
 
 const teamRouter = require('./routes/teamRoutes');
 const testRouter = require('./routes/testRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const ErrorHandler = require('./utils/errorHandler');
 const handleError = require('./controllers/errorController');
@@ -13,6 +14,7 @@ app.use(express.json({ limit: '10kb' }));
 
 app.use('/api/v1/teams', teamRouter);
 app.use('/api/v1/tests', testRouter);
+app.use('/api/v1/users', userRouter);
 
 app.get('*', (req, res, next) => {
     const error = new ErrorHandler(`URL ${req.originalUrl} doesn't exists`, 404);
