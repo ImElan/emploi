@@ -93,3 +93,10 @@ exports.isAuthenticated = catchAsync(async (req, res, next) => {
     req.user = user;
     next();
 });
+
+exports.restrictTo = (...roles) => (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+        return next(new ErrorHandler("You're not allowed to access this route.", 401));
+    }
+    next();
+};
