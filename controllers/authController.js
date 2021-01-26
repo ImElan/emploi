@@ -1,3 +1,4 @@
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
@@ -26,6 +27,7 @@ const sendJwtToken = (user, statusCode, req, res) => {
     user.password = undefined;
     res.status(statusCode).json({
         status: 'success',
+        tokenId,
         data: {
             document: {
                 user,
@@ -53,4 +55,41 @@ exports.login = catchAsync(async (req, res, next) => {
     }
 
     sendJwtToken(user, 200, req, res);
+});
+
+exports.isAuthenticated = catchAsync(async (req, res, next) => {
+    let tokenId;
+    if (req.headers.authorization) {
+        tokenId = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies.jwt) {
+        tokenId = req.cookies.jwt;
+    }
+    if (!tokenId) {
+        return next(
+            new ErrorHandler(
+                "You're not logged in. Please Login to get access to this URL",
+                401
+            )
+        );
+    }
+
+    const decodedPayload = await promisify(jwt.verify)(tokenId, process.env.JWT_SECRET_KEY);
+
+    const user = await User.findById(decodedPayload.id);
+
+    if (!user) {
+        return next(new ErrorHandler('Your account no longer exists.', 401));
+    }
+
+    if (user.isPasswordChangedAfterTokenIsIssued(decodedPayload.iat)) {
+        return next(
+            new ErrorHandler(
+                'Your account password has been changed. Please login again to continue',
+                401
+            )
+        );
+    }
+
+    req.user = user;
+    next();
 });

@@ -62,8 +62,24 @@ userSchema.pre('save', async function (next) {
     this.passwordConfirmation = undefined;
 });
 
+userSchema.pre('save', function (next) {
+    if (!this.isModified('password') || this.isNew) {
+        return next();
+    }
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
+
 userSchema.methods.isPasswordCorrect = async function (passwordToCheck, correctPassword) {
     return await bcrypt.compare(passwordToCheck, correctPassword);
+};
+
+userSchema.methods.isPasswordChangedAfterTokenIsIssued = function (jwtTimeStamp) {
+    if (this.passwordChangedAt) {
+        const changedTimeStamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+        return changedTimeStamp > jwtTimeStamp;
+    }
+    return false;
 };
 
 const User = mongoose.model('User', userSchema);
