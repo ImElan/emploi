@@ -96,7 +96,31 @@ exports.isAuthenticated = catchAsync(async (req, res, next) => {
 
 exports.restrictTo = (...roles) => (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-        return next(new ErrorHandler("You're not allowed to access this route.", 401));
+        return next(new ErrorHandler("You're not allowed to access this route.", 403));
     }
     next();
 };
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+    const { email } = req.body;
+    if (!email) {
+        return next(
+            new ErrorHandler('Please provide email address to change your password.', 400)
+        );
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+        return next(new ErrorHandler('No user exists with that email id', 404));
+    }
+
+    const resetToken = user.createPasswordResetToken();
+
+    await user.save({ validateBeforeSave: false });
+
+    const resetURL = `${req.protocol}://${req.get(
+        'host'
+    )}/api/v1/user/resetPassword/${resetToken}`;
+
+    res.status(200).send('Hello...');
+});
