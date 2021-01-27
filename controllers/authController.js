@@ -38,11 +38,23 @@ const sendJwtToken = (user, statusCode, req, res) => {
     });
 };
 
+const sendConfirmationMail = async (user, req, res) => {
+    const tokenId = getJwtToken(user.id);
+    const URL = `${req.protocol}://${req.get('host')}/api/v1/users/confirm/${tokenId}`;
+    await new Email(user, URL).sendConfirmationMail();
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            message:
+                'Please Confirm Your Email to continue. A link has been sent to your email address. (Valid Only For 90 days).',
+        },
+    });
+};
+
 exports.signUp = catchAsync(async (req, res, next) => {
     const user = await User.create(req.body);
-    const URL = `${req.protocol}://${req.get('host')}/profile`;
-    await new Email(user, URL).sendWelcome();
-    sendJwtToken(user, 201, req, res);
+    sendConfirmationMail(user, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -54,8 +66,13 @@ exports.login = catchAsync(async (req, res, next) => {
 
     // have to use findOne because it only returns the document find returns cursor to that document... prototype methods can be called only on document.
     const user = await User.findOne({ email }).select('+password');
+
     if (!user || !(await user.isPasswordCorrect(password, user.password))) {
         return next(new ErrorHandler('Incorrect email or password', 401));
+    }
+
+    if (!user.confirmed) {
+        return next(new ErrorHandler('Please confirm your mail first to login', 401));
     }
 
     sendJwtToken(user, 200, req, res);
@@ -186,4 +203,38 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
     await user.save();
     sendJwtToken(user, 200, req, res);
+});
+
+exports.confirmMail = catchAsync(async (req, res, next) => {
+    const { tokenId } = req.params;
+    if (!tokenId) {
+        return next(new ErrorHandler("There's something wrong with the URL", 400));
+    }
+
+    const decodedPayload = await promisify(jwt.verify)(tokenId, process.env.JWT_SECRET_KEY);
+    const user = await User.findById(decodedPayload.id);
+
+    if (!user) {
+        return next(new ErrorHandler('Invalid Token or The token has been modified.', 400));
+    }
+
+    user.confirmed = true;
+    await user.save({ validateBeforeSave: false });
+    sendJwtToken(user, 201, req, res);
+});
+
+exports.resendConfirmationMail = catchAsync(async (req, res, next) => {
+    const { email } = req.body;
+    if (!email) {
+        return next(
+            new ErrorHandler('You must mention your email to send the confirmation link', 400)
+        );
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+        return next(
+            new ErrorHandler('No user found for the given email address. Try Signing up.', 404)
+        );
+    }
+    sendConfirmationMail(user, req, res);
 });

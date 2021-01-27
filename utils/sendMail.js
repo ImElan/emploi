@@ -60,6 +60,10 @@ class Email {
             'Your Password Reset URL (Valid only for 10 minutes)'
         );
     }
+
+    async sendConfirmationMail() {
+        await this.send('confirmMail', 'Confirm Your Email Address (Valid Only For 90 days)');
+    }
 }
 
 module.exports = Email;

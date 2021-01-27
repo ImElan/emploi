@@ -1,0 +1,17 @@
+extends baseEmail
+
+block content
+    p Hi #{firstName},
+        p Welcome to Emploi, we're glad to have you 🎉🙏
+        p Please confirm your mail to continue using our application. Use this #{url} to confirm email.
+        table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+                tr
+                    td(align='left')
+                        table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                            tbody
+                                tr
+                                    td
+                                        a(href=url, target='_blank') Confirm Email
+        p If you need any help, please don't hesitate to contact me!
+        p - Elan

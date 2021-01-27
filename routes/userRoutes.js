@@ -20,6 +20,8 @@ const {
     updatePassword,
     isAuthenticated,
     restrictTo,
+    confirmMail,
+    resendConfirmationMail,
 } = authController;
 
 const router = express.Router();
@@ -28,6 +30,8 @@ router.route('/signUp').post(signUp);
 router.route('/login').post(login);
 router.route('/forgotPassword').post(forgotPassword);
 router.route('/resetPassword/:resetToken').post(resetPassword);
+router.route('/confirm/:tokenId').patch(confirmMail);
+router.route('/resendConfirmationMail').post(resendConfirmationMail);
 
 router.use(isAuthenticated);
 
