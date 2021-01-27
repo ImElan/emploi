@@ -1,6 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
+const compression = require('compression');
+const cors = require('cors');
 
 const teamRouter = require('./routes/teamRoutes');
 const testRouter = require('./routes/testRoutes');
@@ -20,6 +27,25 @@ app.use(express.json({ limit: '10kb' }));
 
 // cookie-parser
 app.use(cookieParser());
+
+// set security headers
+app.use(helmet());
+
+app.use(cors());
+app.options('*', cors());
+app.use(mongoSanitize());
+app.use(xss());
+app.use(hpp());
+
+// Limit http req from same IP
+const limiter = rateLimit({
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many request from your IP. Please try again after one hour',
+});
+
+app.use('/api', limiter);
+app.use(compression());
 
 app.use('/api/v1/teams', teamRouter);
 app.use('/api/v1/tests', testRouter);
