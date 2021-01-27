@@ -82,7 +82,7 @@ exports.isAuthenticated = catchAsync(async (req, res, next) => {
     const user = await User.findById(decodedPayload.id);
 
     if (!user) {
-        return next(new ErrorHandler('Your account no longer exists.', 401));
+        return next(new ErrorHandler("There's no account with the given email address.", 401));
     }
 
     if (user.isPasswordChangedAfterTokenIsIssued(decodedPayload.iat)) {
