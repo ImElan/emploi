@@ -166,3 +166,24 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
     sendJwtToken(user, 200, req, res);
 });
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.user.id).select('+password');
+
+    const { currentPassword, newPassword, newPasswordConfirmation } = req.body;
+
+    if (!user || !(await user.isPasswordCorrect(currentPassword, user.password))) {
+        return next(
+            new ErrorHandler(
+                "Given password doesn't match the current password. If you've forgotten the password use forgot password URL",
+                401
+            )
+        );
+    }
+
+    user.password = newPassword;
+    user.passwordConfirmation = newPasswordConfirmation;
+
+    await user.save();
+    sendJwtToken(user, 200, req, res);
+});
