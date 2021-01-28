@@ -12,6 +12,7 @@ const cors = require('cors');
 const teamRouter = require('./routes/teamRoutes');
 const testRouter = require('./routes/testRoutes');
 const userRouter = require('./routes/userRoutes');
+const memberRouter = require('./routes/memberRoutes');
 
 const ErrorHandler = require('./utils/errorHandler');
 const handleError = require('./controllers/errorController');
@@ -50,6 +51,7 @@ app.use(compression());
 app.use('/api/v1/teams', teamRouter);
 app.use('/api/v1/tests', testRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/members', memberRouter);
 
 app.all('*', (req, res, next) => {
     const error = new ErrorHandler(`URL ${req.originalUrl} doesn't exists`, 404);

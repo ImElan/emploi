@@ -65,6 +65,7 @@ const testSchema = mongoose.Schema(
         team: {
             type: mongoose.Schema.ObjectId,
             ref: 'Team',
+            required: [true, 'A test should belong to a team.'],
         },
     },
     {

@@ -31,13 +31,34 @@ const teamSchema = mongoose.Schema(
             type: Date,
             default: Date.now(),
         },
+        createdBy: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'User',
+            required: [true, 'A Team must specify a creator'],
+        },
         codeToJoin: String,
+        codeToJoinChangedAt: Date,
     },
     {
         toJSON: { virtuals: true },
         toObject: { virtuals: true },
     }
 );
+
+teamSchema.pre('save', function (next) {
+    if (!this.isModified('codeToJoin') || this.isNew) {
+        return next();
+    }
+    this.codeToJoinChangedAt = Date.now() - 1000;
+    next();
+});
+
+teamSchema.methods.codeChangedAfterInviteIsIssued = function (inviteIssuedTimestamp) {
+    if (this.codeToJoinChangedAt) {
+        const changedTimeStamp = parseInt(this.codeToJoinChangedAt.getTime() / 1000, 10);
+        return changedTimeStamp > inviteIssuedTimestamp;
+    }
+};
 
 const Team = mongoose.model('Team', teamSchema);
 

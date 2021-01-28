@@ -1,8 +1,16 @@
+const { promisify } = require('util');
+const jwt = require('jsonwebtoken');
 const Team = require('../models/teamModel');
 const Test = require('../models/testModel');
 const ApiFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const ErrorHandler = require('../utils/errorHandler');
+const Member = require('../models/memberModel');
+
+const getJwtToken = (id) =>
+    jwt.sign({ id: id }, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_TEAM_INVITE_EXPIRATION_TIME,
+    });
 
 exports.getAllTeams = catchAsync(async (req, res, next) => {
     const features = new ApiFeatures(Team.find(), req.query)
@@ -37,7 +45,13 @@ exports.getTeam = catchAsync(async (req, res, next) => {
 });
 
 exports.addNewTeam = catchAsync(async (req, res, next) => {
+    req.body.createdBy = req.user.id;
     const team = await Team.create(req.body);
+    // Generate codeToJoin...
+    const codeToJoin = getJwtToken(team.id);
+    team.codeToJoin = codeToJoin;
+    await team.save({ validateBeforeSave: false });
+
     res.status(201).json({
         status: 'success',
         data: {
@@ -78,5 +92,48 @@ exports.deleteTeam = catchAsync(async (req, res, next) => {
     res.status(204).json({
         status: 'success',
         data: null,
+    });
+});
+
+exports.getInviteLink = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const team = await Team.findById(id);
+
+    if (!team) {
+        return next(new ErrorHandler('No Team with the given id.', 404));
+    }
+
+    const inviteLink = `${req.protocol}://${req.get('host')}/api/v1/teams/join/${
+        team.codeToJoin
+    }`;
+    res.status(200).json({
+        status: 'success',
+        data: {
+            document: inviteLink,
+        },
+    });
+});
+
+exports.joinTeam = catchAsync(async (req, res, next) => {
+    const { codeToJoin } = req.params;
+    const decodedPayload = await promisify(jwt.verify)(codeToJoin, process.env.JWT_SECRET_KEY);
+
+    const teamId = decodedPayload.id;
+
+    const team = await Team.findById(teamId);
+
+    if (!team) {
+        return next(new ErrorHandler('No team exists with the given id.', 404));
+    }
+    const body = {
+        team: teamId,
+        user: req.user.id,
+    };
+    const member = await Member.create(body);
+    res.status(200).json({
+        status: 'success',
+        data: {
+            document: member,
+        },
     });
 });
