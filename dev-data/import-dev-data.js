@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 const Test = require('../models/testModel');
+const User = require('../models/userModel');
+const Team = require('../models/teamModel');
+const Member = require('../models/memberModel');
 
 dotenv.config({ path: '../config.env' });
 
@@ -22,10 +25,16 @@ mongoose
 
 // READING FILES
 const tests = JSON.parse(fs.readFileSync(`${__dirname}/tests.json`, 'utf-8'));
+const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8'));
+const teams = JSON.parse(fs.readFileSync(`${__dirname}/teams.json`, 'utf-8'));
+const members = JSON.parse(fs.readFileSync(`${__dirname}/members.json`, 'utf-8'));
 
 const loadData = async () => {
     try {
         await Test.create(tests);
+        await Team.create(teams);
+        await Member.create(members);
+        await User.create(users, { validateBeforeSave: false });
         console.log('Data loaded successfully..');
     } catch (error) {
         console.log(error);
@@ -36,6 +45,9 @@ const loadData = async () => {
 const deleteData = async () => {
     try {
         await Test.deleteMany();
+        await User.deleteMany();
+        await Team.deleteMany();
+        await Member.deleteMany();
         console.log('Data deleted successfully..');
     } catch (error) {
         console.log(error);

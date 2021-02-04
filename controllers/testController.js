@@ -8,6 +8,10 @@ exports.setTestBody = (req, res, next) => {
     if (!req.body.team) {
         req.body.team = req.params.teamId;
     }
+
+    if (!req.body.createdBy) {
+        req.body.createdBy = req.user.id;
+    }
     next();
 };
 

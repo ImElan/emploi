@@ -1,0 +1,28 @@
+[
+    {
+        "_id": "601c1c0779bc7e47e47c4509",
+        "createdAt": "2021-02-04T16:05:27.670Z",
+        "reps": ["601c1bfc79bc7e47e47c4508"],
+        "name": "ECE Final Year",
+        "degree": "UG",
+        "department": "Electronics Engineering",
+        "yearOfStudy": 4,
+        "createdBy": "601c1bfc79bc7e47e47c4508",
+        "__v": 1,
+        "codeToJoin": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwMWMxYzA3NzliYzdlNDdlNDdjNDUwOSIsImlhdCI6MTYxMjQ1NDkxOSwiZXhwIjoxNjEzMDU5NzE5fQ.jn-sq7edWShCnsX9ec6U2vieuii0ZCSfKTwjIJVGNMg",
+        "codeToJoinChangedAt": "2021-02-04T16:08:38.116Z"
+    },
+    {
+        "_id": "601c1c2779bc7e47e47c450b",
+        "createdAt": "2021-02-04T16:05:27.670Z",
+        "reps": ["601c1c1a79bc7e47e47c450a"],
+        "name": "CT Final Year",
+        "degree": "UG",
+        "department": "Computer Technology",
+        "yearOfStudy": 4,
+        "createdBy": "601c1c1a79bc7e47e47c450a",
+        "__v": 1,
+        "codeToJoin": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwMWMxYzI3NzliYzdlNDdlNDdjNDUwYiIsImlhdCI6MTYxMjQ1NDk1MSwiZXhwIjoxNjEzMDU5NzUxfQ.daVw8q6YFEdIZrf228bg-icW2OsfTelzfr5FZ9XYy3U",
+        "codeToJoinChangedAt": "2021-02-04T16:09:10.472Z"
+    }
+]
