@@ -5,6 +5,7 @@ const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const ErrorHandler = require('../utils/errorHandler');
 const Email = require('../utils/sendMail');
+const filterBody = require('../utils/filterBody');
 
 const getJwtToken = (id) =>
     jwt.sign({ id: id }, process.env.JWT_SECRET_KEY, {
@@ -53,8 +54,39 @@ const sendConfirmationMail = async (user, req, res) => {
 };
 
 exports.signUp = catchAsync(async (req, res, next) => {
-    const user = await User.create(req.body);
-    sendConfirmationMail(user, req, res);
+    let filteredBody;
+
+    // On Production we don't want to allow users to make themselves as admin,rep... and also we don't want them to just confirm the email through api.
+    if (process.env.NODE_ENV === 'production') {
+        filteredBody = filterBody(
+            req.body,
+            'name',
+            'email',
+            'photo',
+            'password',
+            'passwordConfirmation'
+        );
+    } else {
+        filteredBody = filterBody(
+            req.body,
+            'name',
+            'email',
+            'photo',
+            'password',
+            'passwordConfirmation',
+            'role',
+            'confirmed'
+        );
+    }
+
+    const user = await User.create(filteredBody);
+
+    // In development we can just login straight away...no need to confirm email.
+    if (process.env.NODE_ENV === 'production') {
+        sendConfirmationMail(user, req, res);
+    } else {
+        sendJwtToken(user, 200, req, res);
+    }
 });
 
 exports.login = catchAsync(async (req, res, next) => {

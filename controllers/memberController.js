@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const Member = require('../models/memberModel');
 const Team = require('../models/teamModel');
 const ErrorHandler = require('../utils/errorHandler');
@@ -33,7 +32,7 @@ exports.getAllMembers = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         data: {
-            numTest: members.length,
+            numMembers: members.length,
             document: members,
         },
     });

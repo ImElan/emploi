@@ -62,6 +62,11 @@ const testSchema = mongoose.Schema(
             type: String,
             required: [true, 'A Test should have details about salary package.'],
         },
+        createdBy: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'User',
+            required: [true, 'A Test must be created by a user.'],
+        },
         team: {
             type: mongoose.Schema.ObjectId,
             ref: 'Team',

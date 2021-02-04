@@ -32,7 +32,7 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601bf8054dbb7d02eb9c6173"
     },
     {
         "companyName": "Arcesium",
@@ -67,7 +67,7 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601bf8054dbb7d02eb9c6173"
     },
     {
         "companyName": "SAP Labs",
@@ -102,7 +102,7 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601bf8054dbb7d02eb9c6173"
     },
     {
         "companyName": "BNY Mellon Technology",
@@ -137,7 +137,7 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601bf8054dbb7d02eb9c6173"
     },
     {
         "companyName": "Texas Instruments",
@@ -172,7 +172,7 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601bf8054dbb7d02eb9c6173"
     },
     {
         "companyName": "Urjanet Energy Solutions",
@@ -207,7 +207,7 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601287149d518835413ade76"
     },
     {
         "companyName": "Chronus Software India",
@@ -242,7 +242,7 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601287149d518835413ade76"
     },
     {
         "companyName": "Amazon Development Center",
@@ -277,7 +277,7 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601287149d518835413ade76"
     },
     {
         "companyName": "Khoros",
@@ -312,6 +312,6 @@
         "bond": null,
         "delinkingAmount": null,
         "confirmationStatus": "confirmed",
-        "team": "600d7436bc66172459c5c521"
+        "team": "601287149d518835413ade76"
     }
 ]

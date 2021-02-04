@@ -1,17 +1,8 @@
 const User = require('../models/userModel');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
+const filterBody = require('../utils/filterBody');
 const { findByIdAndDelete } = require('../models/userModel');
-
-const filterBody = (body, ...allowedFields) => {
-    const filteredBody = { ...body };
-    Object.keys(filteredBody).forEach((field) => {
-        if (!allowedFields.includes(field)) {
-            delete filteredBody[field];
-        }
-    });
-    return filteredBody;
-};
 
 exports.updateProfile = catchAsync(async (req, res, next) => {
     if (req.body.password || req.body.passwordConfirmation) {
