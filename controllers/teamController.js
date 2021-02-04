@@ -50,6 +50,7 @@ exports.addNewTeam = catchAsync(async (req, res, next) => {
     // Generate codeToJoin...
     const codeToJoin = getJwtToken(team.id);
     team.codeToJoin = codeToJoin;
+    team.reps.push(req.user.id);
     await team.save({ validateBeforeSave: false });
 
     res.status(201).json({

@@ -36,6 +36,12 @@ const teamSchema = mongoose.Schema(
             ref: 'User',
             required: [true, 'A Team must specify a creator'],
         },
+        reps: [
+            {
+                type: mongoose.Schema.ObjectId,
+                ref: 'User',
+            },
+        ],
         codeToJoin: String,
         codeToJoinChangedAt: Date,
     },
