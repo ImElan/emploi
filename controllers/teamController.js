@@ -96,14 +96,7 @@ exports.deleteTeam = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getInviteLink = catchAsync(async (req, res, next) => {
-    const { id } = req.params;
-    const team = await Team.findById(id);
-
-    if (!team) {
-        return next(new ErrorHandler('No Team with the given id.', 404));
-    }
-
+const sendInviteLink = (team, req, res, next) => {
     const inviteLink = `${req.protocol}://${req.get('host')}/api/v1/teams/join/${
         team.codeToJoin
     }`;
@@ -113,6 +106,16 @@ exports.getInviteLink = catchAsync(async (req, res, next) => {
             document: inviteLink,
         },
     });
+};
+
+exports.getInviteLink = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const team = await Team.findById(id);
+
+    if (!team) {
+        return next(new ErrorHandler('No Team with the given id.', 404));
+    }
+    sendInviteLink(team, req, res, next);
 });
 
 exports.joinTeam = catchAsync(async (req, res, next) => {
@@ -126,6 +129,16 @@ exports.joinTeam = catchAsync(async (req, res, next) => {
     if (!team) {
         return next(new ErrorHandler('No team exists with the given id.', 404));
     }
+
+    if (team.codeChangedAfterInviteIsIssued(decodedPayload.iat)) {
+        return next(
+            new ErrorHandler(
+                "You're using old invite link. Please use the new invite link to join",
+                401
+            )
+        );
+    }
+
     const body = {
         team: teamId,
         user: req.user.id,
@@ -137,4 +150,17 @@ exports.joinTeam = catchAsync(async (req, res, next) => {
             document: member,
         },
     });
+});
+
+exports.generateNewInviteLink = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const team = await Team.findById(id);
+
+    if (!team) {
+        return next(new ErrorHandler('No team exists with the given id.', 404));
+    }
+    const codeToJoin = getJwtToken(id);
+    team.codeToJoin = codeToJoin;
+    await team.save({ validateBeforeSave: false });
+    sendInviteLink(team, req, res, next);
 });

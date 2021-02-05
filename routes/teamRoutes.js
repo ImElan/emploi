@@ -16,6 +16,7 @@ const {
     deleteTeam,
     getInviteLink,
     joinTeam,
+    generateNewInviteLink,
 } = teamController;
 
 const { isAuthenticated, restrictTo } = authController;
@@ -24,6 +25,9 @@ const { addNewRepToTeam, deleteRepFromTeam } = repsController;
 
 router.route('/getInviteLink/:id').get(isAuthenticated, restrictTo('rep'), getInviteLink);
 router.route('/join/:codeToJoin').post(isAuthenticated, joinTeam);
+router
+    .route('/generateNewInviteLink/:id')
+    .get(isAuthenticated, restrictTo('rep'), generateNewInviteLink);
 
 router
     .route('/')

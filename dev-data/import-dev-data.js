@@ -45,9 +45,9 @@ const loadData = async () => {
 const deleteData = async () => {
     try {
         await Test.deleteMany();
-        await User.deleteMany();
         await Team.deleteMany();
         await Member.deleteMany();
+        await User.deleteMany();
         console.log('Data deleted successfully..');
     } catch (error) {
         console.log(error);
