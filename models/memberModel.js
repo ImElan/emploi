@@ -17,6 +17,15 @@ const memberSchema = mongoose.Schema({
     },
 });
 
+memberSchema.pre(/^find/, function (next) {
+    // No need to populate team because we'll get all members of a team when a particular team is queried so the team content will already be there.
+    this.populate({
+        path: 'user',
+        select: 'name email',
+    });
+    next();
+});
+
 const Member = mongoose.model('Member', memberSchema);
 
 module.exports = Member;

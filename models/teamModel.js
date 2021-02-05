@@ -51,11 +51,28 @@ const teamSchema = mongoose.Schema(
     }
 );
 
+teamSchema.virtual('members', {
+    ref: 'Member',
+    foreignField: 'team',
+    localField: '_id',
+});
+
 teamSchema.pre('save', function (next) {
     if (!this.isModified('codeToJoin') || this.isNew) {
         return next();
     }
     this.codeToJoinChangedAt = Date.now() - 1000;
+    next();
+});
+
+teamSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'reps',
+        select: 'name email',
+    }).populate({
+        path: 'createdBy',
+        select: 'name email',
+    });
     next();
 });
 

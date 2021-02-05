@@ -30,7 +30,7 @@ exports.getAllTeams = catchAsync(async (req, res, next) => {
 
 exports.getTeam = catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const team = await Team.findById(id);
+    const team = await Team.findById(id).populate('members');
 
     if (!team) {
         return next(new ErrorHandler('No Team was found with the given id', 404));

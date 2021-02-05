@@ -80,7 +80,13 @@ const testSchema = mongoose.Schema(
 );
 
 testSchema.pre(/^find/, function (next) {
-    this.populate({ path: 'team', select: '-__v' });
+    this.populate({
+        path: 'team',
+        select: 'name degree department yearOfStudy',
+    }).populate({
+        path: 'createdBy',
+        select: 'name email',
+    });
     next();
 });
 
