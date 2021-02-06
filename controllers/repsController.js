@@ -1,5 +1,6 @@
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
+const isRepOfSameTeam = require('../utils/checkIfRepOfSameTeam');
 
 const Team = require('../models/teamModel');
 const User = require('../models/userModel');
@@ -19,6 +20,12 @@ exports.addNewRepToTeam = catchAsync(async (req, res, next) => {
 
     if (user.role !== 'rep') {
         return next(new ErrorHandler('Given user is not a rep', 400));
+    }
+
+    if (!isRepOfSameTeam(team, req.user.id) && req.user.role !== 'admin') {
+        return next(
+            new ErrorHandler("You don't have permission to perform this action.", 401)
+        );
     }
 
     team.reps.push(userId);
@@ -45,13 +52,18 @@ exports.deleteRepFromTeam = catchAsync(async (req, res, next) => {
         return next(new ErrorHandler('No user was found with the given id.', 404));
     }
 
-    const currentReps = team.reps;
+    if (!isRepOfSameTeam(team, req.user.id) && req.user.role !== 'admin') {
+        return next(
+            new ErrorHandler("You don't have permission to perform this action.", 401)
+        );
+    }
 
-    if (!currentReps.includes(userId)) {
+    if (!isRepOfSameTeam(team, userId)) {
         return next(new ErrorHandler('Given user is not a rep of the team.', 400));
     }
 
-    const updatedReps = currentReps.filter((repsId) => repsId.toString() !== userId);
+    const currentReps = team.reps;
+    const updatedReps = currentReps.filter((repsId) => repsId.id !== userId);
 
     team.reps = updatedReps;
     await team.save();
@@ -59,7 +71,7 @@ exports.deleteRepFromTeam = catchAsync(async (req, res, next) => {
         status: 'success',
         message: `User with userId ${userId} has been deleted from reps in team with teamId ${teamId}.`,
         data: {
-            document: team.reps,
+            document: updatedReps,
         },
     });
 });
