@@ -2,6 +2,7 @@ const express = require('express');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const appliedRouter = require('./appliedRoutes');
+const completedRouter = require('./completedRoutes');
 
 const {
     getProfile,
@@ -35,6 +36,7 @@ router.route('/confirm/:tokenId').patch(confirmMail);
 router.route('/resendConfirmationMail').post(resendConfirmationMail);
 
 router.use('/:userId/applied', appliedRouter);
+router.use('/:userId/completed', completedRouter);
 
 router.use(isAuthenticated);
 

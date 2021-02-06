@@ -4,7 +4,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
 
-const { isAuthenticated, restrictTo } = authController;
+const { isAuthenticated } = authController;
 
 const {
     getAllApplied,

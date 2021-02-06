@@ -14,6 +14,7 @@ const testRouter = require('./routes/testRoutes');
 const userRouter = require('./routes/userRoutes');
 const memberRouter = require('./routes/memberRoutes');
 const appliedRouter = require('./routes/appliedRoutes');
+const completedRouter = require('./routes/completedRoutes');
 
 const ErrorHandler = require('./utils/errorHandler');
 const handleError = require('./controllers/errorController');
@@ -54,6 +55,7 @@ app.use('/api/v1/tests', testRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/members', memberRouter);
 app.use('/api/v1/applied', appliedRouter);
+app.use('/api/v1/completed', completedRouter);
 
 app.all('*', (req, res, next) => {
     const error = new ErrorHandler(`URL ${req.originalUrl} doesn't exists`, 404);
