@@ -54,6 +54,12 @@ exports.addNewTeam = catchAsync(async (req, res, next) => {
     team.reps.push(req.user.id);
     await team.save({ validateBeforeSave: false });
 
+    const body = {
+        team: team.id,
+        user: req.user.id,
+    };
+    await Member.create(body);
+
     res.status(201).json({
         status: 'success',
         data: {
@@ -103,6 +109,7 @@ const sendInviteLink = (team, req, res, next) => {
     }`;
     res.status(200).json({
         status: 'success',
+        codeToJoin: team.codeToJoin,
         data: {
             document: inviteLink,
         },
