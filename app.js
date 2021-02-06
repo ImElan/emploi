@@ -13,6 +13,7 @@ const teamRouter = require('./routes/teamRoutes');
 const testRouter = require('./routes/testRoutes');
 const userRouter = require('./routes/userRoutes');
 const memberRouter = require('./routes/memberRoutes');
+const appliedRouter = require('./routes/appliedRoutes');
 
 const ErrorHandler = require('./utils/errorHandler');
 const handleError = require('./controllers/errorController');
@@ -52,6 +53,7 @@ app.use('/api/v1/teams', teamRouter);
 app.use('/api/v1/tests', testRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/members', memberRouter);
+app.use('/api/v1/applied', appliedRouter);
 
 app.all('*', (req, res, next) => {
     const error = new ErrorHandler(`URL ${req.originalUrl} doesn't exists`, 404);
