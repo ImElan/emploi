@@ -3,6 +3,7 @@ const Team = require('../models/teamModel');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
 const ApiFeatures = require('../utils/apiFeatures');
+const isRepOfSameTeam = require('../utils/checkIfRepOfSameTeam');
 
 exports.setTestBody = (req, res, next) => {
     if (!req.body.team) {
@@ -68,6 +69,16 @@ exports.getTest = catchAsync(async (req, res, next) => {
 });
 
 exports.addNewTest = catchAsync(async (req, res, next) => {
+    const team = await Team.findById(req.body.team);
+    if (!team) {
+        return next(new ErrorHandler('No team was found with the given ID.', 404));
+    }
+
+    if (!isRepOfSameTeam(team, req.user.id) && req.user.role !== 'admin') {
+        return next(new ErrorHandler('Only reps of this team can add test to it.', 401));
+    }
+
+    req.body.createdBy = req.user.id;
     const test = await Test.create(req.body);
     res.status(201).json({
         status: 'success',

@@ -23,19 +23,28 @@ const { isAuthenticated, restrictTo } = authController;
 
 const { addNewRepToTeam, deleteRepFromTeam } = repsController;
 
-router.route('/getInviteLink/:id').get(isAuthenticated, restrictTo('rep'), getInviteLink);
+router
+    .route('/getInviteLink/:id')
+    .get(isAuthenticated, restrictTo('rep', 'admin'), getInviteLink);
 router.route('/join/:codeToJoin').post(isAuthenticated, joinTeam);
 router
     .route('/generateNewInviteLink/:id')
-    .get(isAuthenticated, restrictTo('rep'), generateNewInviteLink);
+    .get(isAuthenticated, restrictTo('rep', 'admin'), generateNewInviteLink);
 
 router
     .route('/')
     .get(isAuthenticated, getAllTeams)
-    .post(isAuthenticated, restrictTo('rep'), addNewTeam);
-router.route('/:id').get(getTeam).patch(updateTeam).delete(deleteTeam);
+    .post(isAuthenticated, restrictTo('rep', 'admin'), addNewTeam);
+router
+    .route('/:id')
+    .get(isAuthenticated, getTeam)
+    .patch(isAuthenticated, restrictTo('rep', 'admin'), updateTeam)
+    .delete(isAuthenticated, restrictTo('rep', 'admin'), deleteTeam);
 
-router.route('/:teamId/reps/:userId').post(addNewRepToTeam).delete(deleteRepFromTeam);
+router
+    .route('/:teamId/reps/:userId')
+    .post(isAuthenticated, restrictTo('rep', 'admin'), addNewRepToTeam)
+    .delete(isAuthenticated, restrictTo('rep', 'admin'), deleteRepFromTeam);
 
 // Nested Routes for Teams / Tests.
 router.use('/:teamId/tests', testRouter);

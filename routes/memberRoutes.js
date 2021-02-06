@@ -13,9 +13,14 @@ const {
     deleteMember,
 } = memberController;
 
-const { isAuthenticated } = authController;
+const { isAuthenticated, restrictTo } = authController;
 
-router.route('/').get(getAllMembers).post(isAuthenticated, setMemberBody, addNewMember);
-router.route('/:id').get(getMember).patch(updateMember).delete(deleteMember);
+router.use(isAuthenticated);
+router.route('/').get(getAllMembers).post(setMemberBody, addNewMember);
+router
+    .route('/:id')
+    .get(getMember)
+    .patch(restrictTo('admin'), updateMember)
+    .delete(restrictTo('rep', 'admin'), deleteMember);
 
 module.exports = router;

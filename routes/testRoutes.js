@@ -16,10 +16,13 @@ const {
 
 const { isAuthenticated, restrictTo } = authController;
 
+router.use(isAuthenticated);
+
+router.route('/').get(getAllTest).post(restrictTo('rep', 'admin'), setTestBody, addNewTest);
 router
-    .route('/')
-    .get(getAllTest)
-    .post(isAuthenticated, restrictTo('rep'), setTestBody, addNewTest);
-router.route('/:id').get(getTest).patch(updateTest).delete(deleteTest);
+    .route('/:id')
+    .get(getTest)
+    .patch(restrictTo('rep', 'admin'), updateTest)
+    .delete(restrictTo('rep', 'admin'), deleteTest);
 
 module.exports = router;

@@ -5,6 +5,7 @@ const Test = require('../models/testModel');
 const ApiFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const ErrorHandler = require('../utils/errorHandler');
+const isRepOfSameTeam = require('../utils/checkIfRepOfSameTeam');
 const Member = require('../models/memberModel');
 
 const getJwtToken = (id) =>
@@ -115,6 +116,11 @@ exports.getInviteLink = catchAsync(async (req, res, next) => {
     if (!team) {
         return next(new ErrorHandler('No Team with the given id.', 404));
     }
+
+    if (!isRepOfSameTeam(team, req.user.id) && req.user.role !== 'admin') {
+        return next(new ErrorHandler('Only Reps of the Team can get the invite link', 401));
+    }
+
     sendInviteLink(team, req, res, next);
 });
 
@@ -159,6 +165,11 @@ exports.generateNewInviteLink = catchAsync(async (req, res, next) => {
     if (!team) {
         return next(new ErrorHandler('No team exists with the given id.', 404));
     }
+
+    if (!isRepOfSameTeam(team, req.user.id) && req.user.role !== 'admin') {
+        return next(new ErrorHandler('Only Reps of the Team can get the invite link', 401));
+    }
+
     const codeToJoin = getJwtToken(id);
     team.codeToJoin = codeToJoin;
     await team.save({ validateBeforeSave: false });
