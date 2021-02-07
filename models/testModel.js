@@ -62,6 +62,10 @@ const testSchema = mongoose.Schema(
             type: String,
             required: [true, 'A Test should have details about salary package.'],
         },
+        formLink: {
+            type: String,
+            required: [true, 'A Test should have a link to apply.'],
+        },
         createdBy: {
             type: mongoose.Schema.ObjectId,
             ref: 'User',
