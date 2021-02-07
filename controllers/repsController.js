@@ -28,6 +28,10 @@ exports.addNewRepToTeam = catchAsync(async (req, res, next) => {
         );
     }
 
+    if (isRepOfSameTeam(team, userId)) {
+        return next(new ErrorHandler('This user is already a rep of the team', 400));
+    }
+
     team.reps.push(userId);
     await team.save();
     res.status(200).json({
