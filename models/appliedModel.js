@@ -9,7 +9,7 @@ const appliedSchema = mongoose.Schema(
         },
         user: {
             type: mongoose.Schema.ObjectId,
-            ref: 'user',
+            ref: 'User',
             required: [true, 'Applied test should belong to a user.'],
         },
         appliedAt: {
@@ -24,6 +24,14 @@ const appliedSchema = mongoose.Schema(
 );
 
 appliedSchema.index({ user: 1, test: 1 }, { unique: true });
+
+appliedSchema.pre(/^find/, function (next) {
+    this.populate({ path: 'user' }).populate({
+        path: 'test',
+        select: 'companyName salaryDetails criteria',
+    });
+    next();
+});
 
 const Applied = mongoose.model('Applied', appliedSchema);
 

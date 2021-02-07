@@ -9,7 +9,7 @@ const completedSchema = mongoose.Schema(
         },
         user: {
             type: mongoose.Schema.ObjectId,
-            ref: 'user',
+            ref: 'User',
             required: [true, 'Completed test should belong to a user.'],
         },
         completedAt: {
@@ -24,6 +24,14 @@ const completedSchema = mongoose.Schema(
 );
 
 completedSchema.index({ user: 1, test: 1 }, { unique: true });
+
+completedSchema.pre(/^find/, function (next) {
+    this.populate({ path: 'user' }).populate({
+        path: 'test',
+        select: 'companyName salaryDetails criteria',
+    });
+    next();
+});
 
 const Completed = mongoose.model('Completed', completedSchema);
 

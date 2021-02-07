@@ -32,6 +32,7 @@ exports.getAllCompleted = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
+        numApplied: completed.length,
         data: {
             document: completed,
         },
