@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const teamSchema = mongoose.Schema(
     {
@@ -44,6 +45,7 @@ const teamSchema = mongoose.Schema(
         ],
         codeToJoin: String,
         codeToJoinChangedAt: Date,
+        slug: String,
     },
     {
         toJSON: { virtuals: true },
@@ -55,6 +57,11 @@ teamSchema.virtual('members', {
     ref: 'Member',
     foreignField: 'team',
     localField: '_id',
+});
+
+teamSchema.pre('save', function (next) {
+    this.slug = slugify(this.name, { lower: true });
+    next();
 });
 
 teamSchema.pre('save', function (next) {

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const testSchema = mongoose.Schema(
     {
@@ -76,12 +77,18 @@ const testSchema = mongoose.Schema(
             ref: 'Team',
             required: [true, 'A test should belong to a team.'],
         },
+        slug: String,
     },
     {
         toJSON: { virtuals: true },
         toObject: { virtuals: true },
     }
 );
+
+testSchema.pre('save', function (next) {
+    this.slug = slugify(this.companyName, { lower: true });
+    next();
+});
 
 testSchema.pre(/^find/, function (next) {
     this.populate({
