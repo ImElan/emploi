@@ -88,7 +88,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const user = await findByIdAndDelete(id);
+    const user = await User.findByIdAndDelete(id);
     if (!user) {
         return next(new ErrorHandler('No user was found with that given id.', 404));
     }

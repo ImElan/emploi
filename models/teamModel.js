@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const Member = require('./memberModel');
+const Test = require('./testModel');
 
 const teamSchema = mongoose.Schema(
     {
@@ -79,6 +81,24 @@ teamSchema.pre(/^find/, function (next) {
     }).populate({
         path: 'createdBy',
         select: 'name email',
+    });
+    next();
+});
+
+teamSchema.post('findOneAndDelete', async (document, next) => {
+    const teamId = document._id;
+    await Test.deleteMany({ team: teamId });
+    await Member.deleteMany({ team: teamId });
+    next();
+});
+
+teamSchema.pre('deleteMany', async function (next) {
+    const docs = await this.model.find(this.getFilter());
+    // console.log(docs);
+    docs.forEach(async (doc) => {
+        // console.log(`Deleting applied and completed from test with id: ${doc._id}`);
+        await Test.deleteMany({ team: doc._id });
+        await Member.deleteMany({ team: doc._id });
     });
     next();
 });

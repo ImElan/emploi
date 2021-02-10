@@ -16,7 +16,10 @@ const {
 const { isAuthenticated, restrictTo } = authController;
 
 router.use(isAuthenticated);
-router.route('/').get(getAllMembers).post(setMemberBody, addNewMember);
+router
+    .route('/')
+    .get(getAllMembers)
+    .post(restrictTo('rep', 'admin'), setMemberBody, addNewMember);
 router
     .route('/:id')
     .get(getMember)

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const Applied = require('./appliedModel');
+const Completed = require('./completedModel');
 
 const testSchema = mongoose.Schema(
     {
@@ -97,6 +99,24 @@ testSchema.pre(/^find/, function (next) {
     }).populate({
         path: 'createdBy',
         select: 'name email',
+    });
+    next();
+});
+
+testSchema.post('findOneAndDelete', async (document, next) => {
+    const testId = document._id;
+    await Applied.deleteMany({ test: testId });
+    await Completed.deleteMany({ test: testId });
+    next();
+});
+
+testSchema.pre('deleteMany', async function (next) {
+    const docs = await this.model.find(this.getFilter());
+    // console.log(docs);
+    docs.forEach(async (doc) => {
+        // console.log(`Deleting applied and completed from test with id: ${doc._id}`);
+        await Applied.deleteMany({ test: doc._id });
+        await Completed.deleteMany({ test: doc._id });
     });
     next();
 });

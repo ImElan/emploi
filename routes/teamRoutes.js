@@ -42,7 +42,7 @@ router
     .delete(isAuthenticated, restrictTo('rep', 'admin'), deleteTeam);
 
 router
-    .route('/:teamId/reps/:userId')
+    .route('/:teamId/reps')
     .post(isAuthenticated, restrictTo('rep', 'admin'), addNewRepToTeam)
     .delete(isAuthenticated, restrictTo('rep', 'admin'), deleteRepFromTeam);
 

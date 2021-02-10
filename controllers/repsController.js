@@ -6,7 +6,8 @@ const Team = require('../models/teamModel');
 const User = require('../models/userModel');
 
 exports.addNewRepToTeam = catchAsync(async (req, res, next) => {
-    const { teamId, userId } = req.params;
+    const { teamId } = req.params;
+    const { userId } = req.body;
 
     const team = await Team.findById(teamId);
     if (!team) {
@@ -44,7 +45,8 @@ exports.addNewRepToTeam = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteRepFromTeam = catchAsync(async (req, res, next) => {
-    const { teamId, userId } = req.params;
+    const { teamId } = req.params;
+    const { userId } = req.body;
 
     const team = await Team.findById(teamId);
     if (!team) {

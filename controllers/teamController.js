@@ -1,7 +1,6 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const Team = require('../models/teamModel');
-const Test = require('../models/testModel');
 const ApiFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const ErrorHandler = require('../utils/errorHandler');
@@ -94,8 +93,9 @@ exports.deleteTeam = catchAsync(async (req, res, next) => {
         return next('No Team was found with the given id', 404);
     }
 
-    // Also delete all the tests that belongs to that team.
-    await Test.deleteMany({ team: id });
+    /* MOVING THIS LOGIC TO PRE REMOVE MIDDLEWARE. */
+    /* // Also delete all the tests that belongs to that team.
+    await Test.deleteMany({ team: id }); */
 
     res.status(204).json({
         status: 'success',

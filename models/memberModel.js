@@ -24,7 +24,7 @@ const memberSchema = mongoose.Schema(
 );
 
 // To ensure there is no duplicates (same user is not joined in the same team twice)
-memberSchema.index({ user: 1, tour: 1 }, { unique: true });
+memberSchema.index({ user: 1, team: 1 }, { unique: true });
 
 memberSchema.pre(/^find/, function (next) {
     // No need to populate team because we'll get all members of a team when a particular team is queried so the team content will already be there.
@@ -34,6 +34,12 @@ memberSchema.pre(/^find/, function (next) {
     });
     next();
 });
+
+/* No need for cascade deleting here because it doesn't have a dependency */
+// memberSchema.post('deleteMany', function (next) {
+//     console.log('Member Model delete many post middleware.');
+//     // console.log(this);
+// });
 
 const Member = mongoose.model('Member', memberSchema);
 

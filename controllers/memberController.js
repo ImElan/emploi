@@ -6,7 +6,6 @@ const ApiFeatures = require('../utils/apiFeatures');
 
 exports.setMemberBody = catchAsync(async (req, res, next) => {
     if (!req.body.team) req.body.team = req.params.teamId;
-    if (!req.body.user) req.body.user = req.user.id;
     next();
 });
 
@@ -17,7 +16,7 @@ exports.getAllMembers = catchAsync(async (req, res, next) => {
     if (teamId) {
         const team = await Team.findById(teamId);
         if (!team) {
-            return new ErrorHandler('No Team exists with that given id.', 404);
+            return next(new ErrorHandler('No Team exists with that given id.', 404));
         }
         filter = { team: teamId };
     }

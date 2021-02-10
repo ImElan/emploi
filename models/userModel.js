@@ -2,6 +2,9 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const Applied = require('./appliedModel');
+const Completed = require('./completedModel');
+const Member = require('./memberModel');
 
 const userSchema = mongoose.Schema(
     {
@@ -79,6 +82,26 @@ userSchema.pre('save', function (next) {
         return next();
     }
     this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
+
+userSchema.post('findOneAndDelete', async (document, next) => {
+    const userId = document._id;
+    await Applied.deleteMany({ user: userId });
+    await Completed.deleteMany({ user: userId });
+    await Member.deleteMany({ user: userId });
+    next();
+});
+
+userSchema.pre('deleteMany', async function (next) {
+    const docs = await this.model.find(this.getFilter());
+    // console.log(docs);
+    docs.forEach(async (doc) => {
+        // console.log(`Deleting applied and completed from test with id: ${doc._id}`);
+        await Applied.deleteMany({ user: doc._id });
+        await Completed.deleteMany({ user: doc._id });
+        await Member.deleteMany({ user: doc._id });
+    });
     next();
 });
 
