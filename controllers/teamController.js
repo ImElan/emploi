@@ -1,11 +1,11 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const Team = require('../models/teamModel');
+const Member = require('../models/memberModel');
 const ApiFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const ErrorHandler = require('../utils/errorHandler');
 const isRepOfSameTeam = require('../utils/checkIfRepOfSameTeam');
-const Member = require('../models/memberModel');
 
 const getJwtToken = (id) =>
     jwt.sign({ id: id }, process.env.JWT_SECRET_KEY, {
@@ -184,6 +184,26 @@ exports.joinTeam = catchAsync(async (req, res, next) => {
         data: {
             document: member,
         },
+    });
+});
+
+exports.leaveTeam = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+
+    const team = await Team.findById(id);
+    if (!team) {
+        return next(new ErrorHandler('No Team exists with the given id.', 404));
+    }
+
+    const member = await Member.findOneAndDelete({ team: id, user: req.user.id });
+    console.log(member);
+    if (!member) {
+        return next(new ErrorHandler("You're not a member of the team to leave.", 400));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Successfully left the team.',
     });
 });
 

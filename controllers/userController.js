@@ -2,7 +2,6 @@ const User = require('../models/userModel');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
 const filterBody = require('../utils/filterBody');
-const { findByIdAndDelete } = require('../models/userModel');
 
 exports.updateProfile = catchAsync(async (req, res, next) => {
     if (req.body.password || req.body.passwordConfirmation) {
