@@ -100,11 +100,21 @@ exports.updateMember = catchAsync(async (req, res, next) => {
 
 exports.deleteMember = catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const member = await Member.findByIdAndDelete(id);
+    const member = await Member.findById(id);
 
     if (!member) {
         return next(new ErrorHandler('No Member was found with the given id', 404));
     }
+
+    const team = await Team.findById(member.team);
+    // console.log(team);
+    if (!isRepOfSameTeam(team, req.user.id) && req.user.role !== 'admin') {
+        return next(
+            new ErrorHandler("You don't have permission to perform this action.", 401)
+        );
+    }
+
+    await Member.findByIdAndDelete(id);
 
     res.status(204).json({
         status: 'success',
