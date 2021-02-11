@@ -1,4 +1,6 @@
 const User = require('../models/userModel');
+const Member = require('../models/memberModel');
+const Team = require('../models/teamModel');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
 const filterBody = require('../utils/filterBody');
@@ -94,5 +96,20 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     res.status(204).json({
         status: 'success',
         data: null,
+    });
+});
+
+exports.getMyTeams = catchAsync(async (req, res, next) => {
+    const currentUserMemberShips = await Member.find({ user: req.user.id });
+    const myTeams = currentUserMemberShips.map((membership) => membership.team);
+    const teams = await Team.find({ _id: { $in: myTeams } });
+    res.status(200).json({
+        status: 'success',
+        data: {
+            numTeams: teams.length,
+            document: {
+                teams,
+            },
+        },
     });
 });

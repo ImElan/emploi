@@ -12,6 +12,7 @@ const {
     getUser,
     updateUser,
     deleteUser,
+    getMyTeams,
 } = userController;
 
 const {
@@ -44,6 +45,7 @@ router.route('/myProfile').get(getProfile, getUser);
 router.route('/updatePassword').patch(updatePassword);
 router.route('/updateProfile').patch(updateProfile);
 router.route('/deleteProfile').delete(deleteProfile);
+router.route('/myTeams').get(getMyTeams);
 
 router.use(restrictTo('admin'));
 

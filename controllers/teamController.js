@@ -196,7 +196,7 @@ exports.leaveTeam = catchAsync(async (req, res, next) => {
     }
 
     const member = await Member.findOneAndDelete({ team: id, user: req.user.id });
-    console.log(member);
+    // console.log(member);
     if (!member) {
         return next(new ErrorHandler("You're not a member of the team to leave.", 400));
     }
