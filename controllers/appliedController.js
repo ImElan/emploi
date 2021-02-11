@@ -3,6 +3,7 @@ const User = require('../models/userModel');
 const ErrorHandler = require('../utils/errorHandler');
 const ApiFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
+const isMemberOfSameTeam = require('../utils/checkIfMemberOfSameTeam');
 
 exports.setAppliedBody = (req, res, next) => {
     if (!req.body.user) req.body.user = req.params.userId;
@@ -40,6 +41,18 @@ exports.getAllApplied = catchAsync(async (req, res, next) => {
 });
 
 exports.addNewApplied = catchAsync(async (req, res, next) => {
+    if (
+        !(await isMemberOfSameTeam(req.body.test, req.params.userId)) &&
+        req.user.role !== 'admin'
+    ) {
+        return next(
+            new ErrorHandler(
+                "You don't belong in this team to mark this test as applied.",
+                401
+            )
+        );
+    }
+
     const applied = await Applied.create(req.body);
     res.status(201).json({
         status: 'success',
@@ -74,7 +87,7 @@ exports.updateApplied = catchAsync(async (req, res, next) => {
         return next(new ErrorHandler('No Applied Test was found with the given id.', 404));
     }
 
-    if (currentApplied.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    if (currentApplied.user.id.toString() !== req.user.id && req.user.role !== 'admin') {
         return next(new ErrorHandler("You don't have permission to do this action.", 401));
     }
 
@@ -100,7 +113,7 @@ exports.deleteApplied = catchAsync(async (req, res, next) => {
         return next(new ErrorHandler('No Applied Test was found with the given id.', 404));
     }
 
-    if (currentApplied.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    if (currentApplied.user.id.toString() !== req.user.id && req.user.role !== 'admin') {
         return next(new ErrorHandler("You don't have permission to do this action.", 401));
     }
 
