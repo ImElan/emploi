@@ -90,14 +90,21 @@ exports.addNewTest = catchAsync(async (req, res, next) => {
 
 exports.updateTest = catchAsync(async (req, res, next) => {
     const { id } = req.params;
+
+    const test = await Test.findById(id);
+
+    if (!test) {
+        return next(new ErrorHandler('No Test was found with the given id', 404));
+    }
+
+    if (!isRepOfSameTeam(test.team, req.user.id) && req.user.role !== 'admin') {
+        return next(new ErrorHandler('Only reps of this team can add test to it.', 401));
+    }
+
     const updatedTest = await Test.findByIdAndUpdate(id, req.body, {
         new: true,
         runValidators: true,
     });
-
-    if (!updatedTest) {
-        return next(new ErrorHandler('No Test was found with the given id', 404));
-    }
 
     res.status(200).json({
         status: 'success',
@@ -109,11 +116,18 @@ exports.updateTest = catchAsync(async (req, res, next) => {
 
 exports.deleteTest = catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const test = await Test.findByIdAndDelete(id);
+
+    const test = await Test.findById(id);
 
     if (!test) {
         return next(new ErrorHandler('No Test was found with the given id', 404));
     }
+
+    if (!isRepOfSameTeam(test.team, req.user.id) && req.user.role !== 'admin') {
+        return next(new ErrorHandler('Only reps of this team can add test to it.', 401));
+    }
+
+    await Test.findByIdAndDelete(id);
 
     res.status(204).json({
         status: 'success',

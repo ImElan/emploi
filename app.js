@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
+// const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
@@ -36,7 +36,7 @@ app.use(helmet());
 
 app.use(cors());
 app.options('*', cors());
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
 
