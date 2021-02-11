@@ -1,9 +1,10 @@
 const Member = require('../models/memberModel');
 const Team = require('../models/teamModel');
+const User = require('../models/userModel');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
 const ApiFeatures = require('../utils/apiFeatures');
-const User = require('../models/userModel');
+const isRepOfSameTeam = require('../utils/checkIfRepOfSameTeam');
 
 exports.setMemberBody = catchAsync(async (req, res, next) => {
     if (!req.body.team) req.body.team = req.params.teamId;
@@ -61,6 +62,12 @@ exports.addNewMember = catchAsync(async (req, res, next) => {
     const user = await User.findById(req.body.user);
     if (!user) {
         return next(new ErrorHandler('No user was found with the given id.', 404));
+    }
+
+    if (!isRepOfSameTeam(team, req.user.id) && req.user.role !== 'admin') {
+        return next(
+            new ErrorHandler("You don't have permission to perform this action.", 401)
+        );
     }
 
     const member = await Member.create(req.body);
