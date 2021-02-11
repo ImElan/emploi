@@ -1,5 +1,6 @@
 const Completed = require('../models/completedModel');
 const User = require('../models/userModel');
+const Test = require('../models/testModel');
 const ErrorHandler = require('../utils/errorHandler');
 const ApiFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
@@ -41,6 +42,16 @@ exports.getAllCompleted = catchAsync(async (req, res, next) => {
 });
 
 exports.addNewCompleted = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+        return next(new ErrorHandler('No user exists with the given Id.', 404));
+    }
+
+    const test = await Test.findById(req.body.test);
+    if (!test) {
+        return next(new ErrorHandler('No test exists with the given Id.', 404));
+    }
+
     if (
         !(await isMemberOfSameTeam(req.body.test, req.params.userId)) &&
         req.user.role !== 'admin'

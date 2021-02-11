@@ -3,6 +3,7 @@ const Team = require('../models/teamModel');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
 const ApiFeatures = require('../utils/apiFeatures');
+const User = require('../models/userModel');
 
 exports.setMemberBody = catchAsync(async (req, res, next) => {
     if (!req.body.team) req.body.team = req.params.teamId;
@@ -52,6 +53,16 @@ exports.getMember = catchAsync(async (req, res, next) => {
 });
 
 exports.addNewMember = catchAsync(async (req, res, next) => {
+    const team = await Team.findById(req.params.teamId);
+    if (!team) {
+        return next(new ErrorHandler('No Team was found with the given id.', 404));
+    }
+
+    const user = await User.findById(req.body.user);
+    if (!user) {
+        return next(new ErrorHandler('No user was found with the given id.', 404));
+    }
+
     const member = await Member.create(req.body);
     res.status(201).json({
         status: 'success',
