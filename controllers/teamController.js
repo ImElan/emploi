@@ -69,14 +69,23 @@ exports.addNewTeam = catchAsync(async (req, res, next) => {
 
 exports.updateTeam = catchAsync(async (req, res, next) => {
     const { id } = req.params;
+
+    const team = await Team.findById(id);
+
+    if (!team) {
+        return next(new ErrorHandler('No Team was found with the given id', 404));
+    }
+
+    if (req.user.id !== team.createdBy.id && req.user.role !== 'admin') {
+        return next(
+            new ErrorHandler("You don't have the permission to perform this action.", 401)
+        );
+    }
+
     const updatedTeam = await Team.findByIdAndUpdate(id, req.body, {
         new: true,
         runValidators: true,
     });
-
-    if (!updatedTeam) {
-        return next('No Team was found with the given id', 404);
-    }
 
     res.status(200).json({
         status: 'success',
@@ -88,8 +97,21 @@ exports.updateTeam = catchAsync(async (req, res, next) => {
 
 exports.deleteTeam = catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const team = await Team.findByIdAndDelete(id);
+
+    const team = await Team.findById(id);
+
     if (!team) {
+        return next(new ErrorHandler('No Team was found with the given id', 404));
+    }
+
+    if (req.user.id !== team.createdBy.id && req.user.role !== 'admin') {
+        return next(
+            new ErrorHandler("You don't have the permission to perform this action.", 401)
+        );
+    }
+
+    const deletedTeam = await Team.findByIdAndDelete(id);
+    if (!deletedTeam) {
         return next('No Team was found with the given id', 404);
     }
 
