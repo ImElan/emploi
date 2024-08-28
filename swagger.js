@@ -13,7 +13,7 @@ const doc = {
             },
         },
     },
-    host: 'localhost:3000',
+    host: 'https://emploi-m76k.onrender.com',
 };
 
 const outputFile = './swagger-output.json';
