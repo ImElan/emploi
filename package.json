@@ -4,9 +4,9 @@
     "description": "Placement Management Tool built using MERN Stack",
     "main": "app.js",
     "scripts": {
-        "start:dev": "nodemon server.js",
-        "start:prod-windows": "SET NODE_ENV=production nodemon server.js",
-        "start:prod-linux": "NODE_ENV=production nodemon server.js"
+        "start:dev": "node swagger.js && nodemon server.js",
+        "start:prod-windows": "node swagger.js && SET NODE_ENV=production nodemon server.js",
+        "start:prod-linux": "node swagger.js && NODE_ENV=production nodemon server.js"
     },
     "author": "Elan",
     "license": "ISC",
@@ -26,10 +26,13 @@
         "mongoose": "^5.11.13",
         "morgan": "^1.10.0",
         "nodemailer": "^6.4.17",
+        "nodemon": "^3.1.4",
         "pug": "^3.0.0",
         "slugify": "^1.4.6",
         "validator": "^13.5.2",
-        "xss-clean": "^0.1.1"
+        "xss-clean": "^0.1.1",
+        "swagger-autogen": "^2.23.7",
+        "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
         "eslint": "^7.18.0",

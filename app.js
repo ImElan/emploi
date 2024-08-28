@@ -3,11 +3,12 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-// const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
 
 const teamRouter = require('./routes/teamRoutes');
 const testRouter = require('./routes/testRoutes');
@@ -49,6 +50,8 @@ const limiter = rateLimit({
 
 app.use('/api', limiter);
 app.use(compression());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api/v1/teams', teamRouter);
 app.use('/api/v1/tests', testRouter);
